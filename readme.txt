@@ -1,0 +1,3 @@
+- thư mục file dùng để chứa các file crawl data và các file query
+- thư mục module để viết các module bằng ngôn ngữ java
+- đường dẫn sẽ thống nhất là: D:\DW_2023_T4_Nhom7
