@@ -1,0 +1,4 @@
+CREATE DATABASE control
+USE control
+CREATE TABLE data_file_configs (id SERIAL PRIMARY KEY, description text, source_path varchar(1000), location varchar(1000), format varchar(255), seperator varchar(255), colums text, destination varchar(1000), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, update_at date , create_by varchar(255), update_by varchar(255));
+CREATE TABLE data_file (id SERIAL PRIMARY KEY, df_config_id bigint not null, name varchar(1000), row_count int, status varchar(1000), note text, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, update_at date, create_by varchar(255), update_by varchar(255));
