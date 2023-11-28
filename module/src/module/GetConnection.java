@@ -17,11 +17,11 @@ public class GetConnection {
 
 	public Connection getConnection(String location) {
 		// 1. path config
-		String link = "D:\\DW_2023_T4_Nhom7\\mmodule\\config\\config.properties";
+		String link = ".\\config\\config.properties";
 		Connection result = null;
 		// 2.1 ket noi db control
 		if (location.equalsIgnoreCase("control")) {
-				try (InputStream input = new FileInputStream(link)) {
+			try (InputStream input = new FileInputStream(link)) {
 				Properties prop = new Properties();
 				prop.load(input);
 				// 2.1.1 lấy từng thuộc tính cấu hình trong file config
