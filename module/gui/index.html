@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tỷ giá</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="./bootstrap-4.6.1-dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <main>
+      <div class="container mt-5">
+        <h2 class="mb-4 text-center">BẢNG TỶ GIÁ NGÀY 13/11/2023</h2>
+
+        <h3>Tỷ giá ngoại tệ cao nhất</h3>
+
+        <div class="mb-5 d-flex align-items-center">
+          <div class="currency_code">
+            <label for="lang-select" class="d-block"
+              >Chọn mã ngoại tệ</label>
+            <select name="lang" id="lang-select">
+              <option value="">USD</option>
+              <option value="">EUR</option>
+              <option value="">AUD</option>
+            </select>
+          </div>
+          <div class="currency_name">
+            <label for="lang-select" class="d-block"
+              >Chọn tỷ giá</label>
+            <select name="lang" id="lang-select">
+              <option value="">Mua tiền mặt</option>
+              <option value="">Mua chuyển khoản</option>
+              <option value="">Bán</option>
+            </select>
+          </div>
+          <button class="fill">Lọc</button>
+        </div>
+        <h3>Tỷ giá ngoại tệ </h3>
+        <div class="select-option">
+          <div>
+            <span class="mb-2 d-block">Ngày cập nhật</span>
+            <div class="datepicker">
+              <input type="date" />
+            </div>
+          </div>
+
+          <div class="bank">
+            <label for="lang-select" class="d-block"
+              >Chọn ngân hàng</label>
+            <select name="lang" id="lang-select">
+              <option value="">Vietcombank</option>
+              <option value="csharp">BIDV</option>
+            </select>
+          </div>
+
+          <div class="">
+            <button class="average">Xem tỷ giá trung bình</button>
+          </div>
+        </div>
+
+       
+
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <!-- colspan: số cột được gộp -->
+                <th scope="col" class="col-2">Mã ngoại tệ</th>
+                <th scope="col" class="col-2">Tên ngoại tệ</th>
+                <th scope="col" class="col-2">Mua tiền mặt</th>
+                <th scope="col" class="col-3">Mua chuyển khoản</th>
+                <th scope="col" class="col-2">Bán</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">USD</th>
+                <td>US DOLLAR</td>
+                <td>23,920.00</td>
+                <td>23,950.00</td>
+                <td>24,290.00</td>
+              </tr>
+              <tr>
+                <th scope="row">EUR</th>
+                <td>EURO</td>
+                <td>25,721.97</td>
+                <td>25,981.79</td>
+                <td>27,134.60</td>
+              </tr>
+              <tr>
+                <th scope="row">GBP</th>
+                <td>POUND STERLING</td>
+                <td>29,444.55</td>
+                <td>29,741.97</td>
+                <td>30,698.68</td>
+              </tr>
+              <tr>
+                <th scope="row">AUD</th>
+                <td>AUSTRALIAN DOLLAR</td>
+                <td>15,598.57</td>
+                <td>15,598.57</td>
+                <td>16,100.33</td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </body>
+  <script src="script.js"></script>
+</html>
