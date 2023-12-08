@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import os
 
 # Đường dẫn của thư mục bạn muốn lưu file
-output_folder = "E:\\Code\\Python\\Learn\\warehouse\\data"
+output_folder = "D:\\DW_2023_T4_Nhom7\\file"
 url = "https://bidv.com.vn/vn/ty-gia-ngoai-te"
 
 option = webdriver.ChromeOptions()
@@ -76,6 +76,6 @@ current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 # Tạo tên file với định dạng "vietcombank_data_<ngày>_<giờ>.xlsx"
 excel_filename = f"{output_folder}/bidv_data_{current_datetime}.xlsx"
-df.to_excel(excel_filename, index=False)
+df.to_csv(excel_filename, index=False)
 
-df.to_excel("data.xlsx", index=False)
+df.to_csv("data.xlsx", index=False)
