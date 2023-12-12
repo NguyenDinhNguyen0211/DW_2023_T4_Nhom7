@@ -1,0 +1,12 @@
+Unknown file config.properties
+.\config\config.propertie (The system cannot find the file specified)	
+HH:mm:ss dd/MM/yyyy - 22:29:27 12/12/2023
+-----
+Unknown file config.properties
+.\config\config.propertie (The system cannot find the file specified)	
+HH:mm:ss dd/MM/yyyy - 22:30:43 12/12/2023
+-----
+Unknown file .\config\config.propertie
+.\config\config.propertie (The system cannot find the file specified)	
+HH:mm:ss dd/MM/yyyy - 22:31:29 12/12/2023
+-----

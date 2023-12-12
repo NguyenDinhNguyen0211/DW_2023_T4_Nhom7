@@ -1,11 +1,15 @@
 package module;
 
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 public class GetConnection {
@@ -14,59 +18,96 @@ public class GetConnection {
 	String user = null;
 	String pass = null;
 	String databasebName = null;
+	boolean checkE = false;
 
-	public Connection getConnection(String location) {
-		// 1. path config
+	public boolean getCheckE() {
+		return checkE;
+	}
+
+	public void setCheckE(boolean check) {
+		checkE = check;
+	}
+
+	public boolean updateError(String location, String message) throws IOException {
+		if (location.equalsIgnoreCase("control")) {
+			// 3.2 log file
+			logFile(message);
+			checkE = false;
+			System.exit(0);
+		} else {
+			// chuyển trạng thái -> đổi update = true
+			checkE = true;
+		}
+		return checkE;
+	}
+
+	public void logFile(String message) throws IOException {
+		FileWriter fw = new FileWriter("D:\\DW_2023_T4_Nhom7\\file\\logs\\logs.txt", true);
+		PrintWriter pw = new PrintWriter(fw);
+		pw.println(message + "\t");
+		pw.println("HH:mm:ss dd/MM/yyyy - "
+				+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy")));
+		pw.println("-----");
+		pw.close();
+	}
+
+	public Connection getConnection(String location) throws IOException {
 		String link = ".\\config\\config.properties";
 		Connection result = null;
-		// 2.1 ket noi db control
+		// 3. ket noi db control
 		if (location.equalsIgnoreCase("control")) {
 			try (InputStream input = new FileInputStream(link)) {
 				Properties prop = new Properties();
 				prop.load(input);
-				// 2.1.1 lấy từng thuộc tính cấu hình trong file config
+				// lấy từng thuộc tính cấu hình trong file config
 				driver = prop.getProperty("driver_local");
 				url = prop.getProperty("url_local");
 				databasebName = prop.getProperty("dbName_control");
 				user = prop.getProperty("user_local");
 				pass = prop.getProperty("pass_local");
 			} catch (IOException ex) {
-				ex.printStackTrace();
+				//  8.3.1, 3.1 Thông báo không tìm thấy file
+				System.out.println("Unknown file " + link);
+				// Log file
+				logFile("Unknown file " + link + "\n" + ex.getMessage());
+				System.exit(0);
 			}
-			// 2.2 ket noi db staging
+			// 8.3 ket noi db staging
 		} else if (location.equalsIgnoreCase("staging")) {
 			try (InputStream input = new FileInputStream(link)) {
 				Properties prop = new Properties();
 				prop.load(input);
-				// 2.2.1 lấy từng thuộc tính cấu hình trong file config
+				// lấy từng thuộc tính cấu hình trong file config
 				driver = prop.getProperty("driver_local");
 				url = prop.getProperty("url_local");
 				databasebName = prop.getProperty("dbName_staging");
 				user = prop.getProperty("user_local");
 				pass = prop.getProperty("pass_local");
 			} catch (IOException ex) {
-				ex.printStackTrace();
+				//  8.3.1, 3.1 Thông báo không tìm thấy file
+				System.out.println("Unknown file " + link);
+				// Log file
+				logFile("Unknown file " + link + "\n" + ex.getMessage());
+				System.exit(0);
 			}
 		}
 		try {
-			// 3. đăng kí driver
+			// đăng kí driver
 			Class.forName(driver);
 			String connectionURL = url + databasebName;
 			try {
-				// 4. kết nối
+				// kết nối
 				result = DriverManager.getConnection(connectionURL, user, pass);
 			} catch (SQLException e) {
-				// 5. thông báo lỗi kết nối
-				System.out.println("Error connect");
-				System.exit(0);
-				e.printStackTrace();
+				// 8.3.1, 3.1 thông báo lỗi kết nối
+				System.out.println("Error connect " + location);
+				updateError(location, "Error connect " + location + "\n" + e.getLocalizedMessage());
 			}
-
 		} catch (ClassNotFoundException e) {
-			// 6. thông báo không tìm thấy file config
-			System.out.println("file config not found");
-			System.exit(0);
-			e.printStackTrace();
+			//  8.3.1, 3.1 thông báo không đăng ký được driver
+			System.out.println("Driver not connect");
+			logFile("driver not connect" + "\n" + e.getMessage());
+			System.exit(0); 
 		}
 		return result;
 	}
