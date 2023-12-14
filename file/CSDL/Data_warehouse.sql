@@ -1,5 +1,5 @@
-CREATE DATABASE DATA_WAREHOUSE;
-USE DATA_WAREHOUSE;
+CREATE DATABASE warehouse;
+USE warehouse;
 
 CREATE TABLE bank_dim (
 id_bank int PRIMARY KEY auto_increment,
@@ -44,9 +44,10 @@ bank_name VARCHAR(1000),
 buy_cash_rate FLOAT,
 buy_transfer_rate FLOAT,
 sale_rate FLOAT,
+create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+update_at TIMESTAMP NULL,
 create_by VARCHAR(1000),
-update_by VARCHAR(1000),
-update_at VARCHAR(1000)
+update_by VARCHAR(1000)
 );
 
 CREATE TABLE avg_rate_aggregate(
@@ -59,30 +60,19 @@ bank_name VARCHAR(1000),
 avg_buy_cash_rate FLOAT,
 avg_buy_transfer_rate FLOAT,
 avg_sale_rate FLOAT,
+create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+update_at TIMESTAMP NULL,
 create_by VARCHAR(1000),
-update_by VARCHAR(1000),
-update_at VARCHAR(1000)
-);
-
-CREATE TABLE temp (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-		month_avg VARCHAR(50),
-    year_avg VARCHAR(50),
-    date DATETIME,
-    currency_code VARCHAR(50),
-    currency_name VARCHAR(1000),
-    bank_name VARCHAR(1000),
-    buy_cash_rate FLOAT,
-    buy_transfer_rate FLOAT,
-    sale_rate FLOAT,
-    avg_buy_cash_rate FLOAT,
-    avg_buy_transfer_rate FLOAT,
-    avg_sale_rate FLOAT,
-    create_by VARCHAR(1000)
+update_by VARCHAR(1000)
 );
 
 
-INSERT INTO exchange_rate_aggregate (date, currency_code, currency_name, bank_name, buy_cash_rate, buy_transfer_rate, sale_rate, create_by, update_by, update_at)
+
+CREATE TRIGGER insert_aggregate AFTER INSERT ON exchange_rate_fact FOR EACH ROW
+
+BEGIN
+
+INSERT INTO exchange_rate_aggregate (date, currency_code, currency_name, bank_name, buy_cash_rate, buy_transfer_rate, sale_rate, create_at, update_at, create_by, update_by)
 SELECT
     d.date,
     c.currency_code,
@@ -91,9 +81,10 @@ SELECT
     e.buy_cash_rate AS buy_cash_rate,
     e.buy_transfer_rate AS buy_transfer_rate,
     e.sale_rate AS sale_rate,
+	NOW() AS create_at,
+	NOW() AS update_at,
     'Nhi' AS create_by,
-    '' AS update_by,
-    NOW() AS update_at
+    '' AS update_by
 FROM
     exchange_rate_fact e
     JOIN currency_dim c ON e.id_currency = c.id_currency
@@ -104,11 +95,15 @@ GROUP BY
     c.currency_code,
     c.currency_name,
 		b.bank_name;
-    
+	END;
 
 
 
-INSERT INTO avg_rate_aggregate (month_avg, year_avg, currency_code, currency_name, bank_name, avg_buy_cash_rate, avg_buy_transfer_rate, avg_sale_rate, create_by, update_by, update_at)
+
+CREATE TRIGGER insert_aggregate AFTER INSERT ON exchange_rate_fact FOR EACH ROW
+
+BEGIN
+INSERT INTO avg_rate_aggregate (month_avg, year_avg, currency_code, currency_name, bank_name, avg_buy_cash_rate, avg_buy_transfer_rate, avg_sale_rate, create_at, update_at, create_by, update_by)
 SELECT
     MONTH(d.date),
     YEAR(d.date),
@@ -118,9 +113,10 @@ SELECT
     AVG(e.buy_cash_rate) AS avg_buy_cash_rate,
     AVG(e.buy_transfer_rate) AS avg_buy_transfer_rate,
     AVG(e.sale_rate) AS avg_sale_rate,
+    NOW() AS create_at,
+	NOW() AS update_at,
     'Nhi' AS create_by,
-    '' AS update_by,
-    NOW() AS update_at
+    '' AS update_by
 FROM
     exchange_rate_fact e
     JOIN currency_dim c ON e.id_currency = c.id_currency
@@ -132,24 +128,4 @@ GROUP BY
     c.currency_code,
     c.currency_name,
 		b.bank_name;
-
-
-		INSERT INTO temp (month_avg, year_avg, date, currency_code, currency_name, bank_name, buy_cash_rate, 
-						buy_transfer_rate, sale_rate, avg_buy_cash_rate, avg_buy_transfer_rate, avg_sale_rate, create_by)
-		SELECT 
-		a.month_avg,
-    a.year_avg,
-    e.date,
-    e.currency_code,
-    e.currency_name,
-    e.bank_name,
-    e.buy_cash_rate,
-    e.buy_transfer_rate,
-    e.sale_rate,
-    a.avg_buy_cash_rate,
-    a.avg_buy_transfer_rate,
-    a.avg_sale_rate,
-    e.create_by
-FROM exchange_rate_aggregate e join avg_rate_aggregate a
-where e.bank_name = a.bank_name AND e.currency_code = a.currency_code AND MONTH(e.date) = a.month_avg AND YEAR(e.date) = a.year_avg;
-
+	END;
