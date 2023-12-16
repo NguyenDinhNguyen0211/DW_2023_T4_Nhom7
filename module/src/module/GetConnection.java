@@ -91,6 +91,25 @@ public class GetConnection {
 				System.exit(0);
 			}
 		}
+		else if(location.equalsIgnoreCase("warehouse")){
+			try (InputStream input = new FileInputStream(link)) {
+				Properties prop = new Properties();
+				prop.load(input);
+				// 2.2.1 lấy từng thuộc tính cấu hình trong file config
+				driver = prop.getProperty("driver_local");
+				url = prop.getProperty("url_local");
+				databasebName = prop.getProperty("dName_datawarehouse");
+				user = prop.getProperty("user_local");
+				pass = prop.getProperty("pass_local");
+				System.out.println("ket noi thanh cong");
+			} catch (IOException ex) {
+				System.out.println("ket noi ko thanh cong");
+				System.out.println("Unknown file " + link);
+				// Log file
+				logFile("Unknown file " + link + "\n" + ex.getMessage());
+				System.exit(0);
+			}
+		}
 		try {
 			// đăng kí driver
 			Class.forName(driver);
