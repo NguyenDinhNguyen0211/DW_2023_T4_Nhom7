@@ -6,13 +6,14 @@ from bs4 import BeautifulSoup
 import os
 
 # Đường dẫn của thư mục bạn muốn lưu file
-output_folder = "D:\\DW_2023_T4_Nhom7\\file"
+output_folder = "E:\\test\\DW_2023_T4_Nhom7-main\\file"
 url = "https://bidv.com.vn/vn/ty-gia-ngoai-te"
 
 option = webdriver.ChromeOptions()
 driver = webdriver.Chrome(options=option)
 
 data = []  # Danh sách chứa dữ liệu
+bank_name = "BIDV"  # Tên ngân hàng
 
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
@@ -51,9 +52,13 @@ try:
             # In thông tin từ mỗi ô
             for cell in cells:
                 # Kiểm tra xem có phần tử mong muốn trong cell không
-                content_span = cell.select_one('span.mobile-content span.ng-binding')
-                if content_span:
-                    content = content_span.text.strip()
+                currency_code = cell.select_one('span.mobile-thead').text.strip()
+                content_spans = cell.select('span.mobile-content span.ng-binding')
+
+                if content_spans:
+                    # Lấy giá trị của thẻ cuối cùng nếu currency_code là 'Tên ngoại tệ'
+                    content = content_spans[-1].text.strip() if currency_code == 'Tên ngoại tệ' else content_spans[
+                        0].text.strip()
                     row_data.append(content)
                 else:
                     row_data.append("Không có dữ liệu")
@@ -70,12 +75,13 @@ finally:
 
 # Tạo DataFrame từ danh sách dữ liệu
 df = pd.DataFrame(data, columns=["Ký hiệu ngoại tệ", "Tên ngoại tệ", "Mua tiền mặt và Séc", "Mua chuyển khoản", "Bán"])
+# Thêm hai cột mới
+df["Bank Name"] = bank_name
+df["Date"] = datetime.now().strftime("%Y-%m-%d")
 
 # Lấy ngày và thời gian hiện tại
 current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 # Tạo tên file với định dạng "vietcombank_data_<ngày>_<giờ>.xlsx"
-excel_filename = f"{output_folder}/bidv_data_{current_datetime}.xlsx"
+excel_filename = f"{output_folder}/bidv_data_{current_datetime}.csv"
 df.to_csv(excel_filename, index=False)
-
-df.to_csv("data.xlsx", index=False)

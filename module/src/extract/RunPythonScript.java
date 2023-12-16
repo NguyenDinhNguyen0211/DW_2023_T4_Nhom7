@@ -1,4 +1,4 @@
-package extract2;
+package extract4;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class RunPythonScript {
     }
 
     public static void main(String[] args) {
-        String pythonScriptPath = "E:\\DW_2023_T4_Nhom7-main\\module\\crawl\\bidvcrawl.py";
+        String pythonScriptPath = "D:\\DW_2023_T4_Nhom7\\module\\crawl\\bidvcrawl.py";
         boolean scriptResult = runScript(pythonScriptPath);
 
         if (scriptResult) {
