@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import os
 
 # Đường dẫn của thư mục bạn muốn lưu file
-output_folder = "E:\\test\\DW_2023_T4_Nhom7-main\\file"
+output_folder = "D:\\DW_2023_T4_Nhom7\\file\\crawl"
 url = "https://bidv.com.vn/vn/ty-gia-ngoai-te"
 
 option = webdriver.ChromeOptions()

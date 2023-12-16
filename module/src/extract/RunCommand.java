@@ -1,4 +1,4 @@
-package extract4;
+package extract;
 
 import model.DataFile;
 import model.DataFileConfig;
@@ -121,7 +121,7 @@ public class RunCommand {
         File csvFile=null;
         switch (urlSource){
             case "vietcombank.com" :
-                if(new CrawlVietcombank().crawlDataVietcombank()){
+                if(new RunPythonScript().runScript("D:\\DW_2023_T4_Nhom7\\module\\crawl\\vietxml.py")){
                     System.out.println("Chạy script data thành công");
                     success = true;
                 }
@@ -131,7 +131,7 @@ public class RunCommand {
                 }
                 break;
             case "bidv.com" :
-                if(new RunPythonScript().runScript("E:\\test\\DW_2023_T4_Nhom7-main\\module\\crawl\\bidvcrawl.py")){
+                if(new RunPythonScript().runScript("D:\\DW_2023_T4_Nhom7-main\\module\\crawl\\bidvcrawl.py")){
                     System.out.println("Chạy script data thành công");
                     success = true;
                 }
