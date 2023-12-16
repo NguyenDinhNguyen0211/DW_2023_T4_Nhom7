@@ -10,3 +10,37 @@ Unknown file .\config\config.propertie
 .\config\config.propertie (The system cannot find the file specified)	
 HH:mm:ss dd/MM/yyyy - 22:31:29 12/12/2023
 -----
+Error connect control
+Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.	
+HH:mm:ss dd/MM/yyyy - 17:10:40 14/12/2023
+-----
+Error connect control
+Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.	
+HH:mm:ss dd/MM/yyyy - 17:14:54 14/12/2023
+-----
+Error connect control
+Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.	
+HH:mm:ss dd/MM/yyyy - 19:25:33 14/12/2023
+-----
+Error connect control
+Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.	
+HH:mm:ss dd/MM/yyyy - 19:30:23 14/12/2023
+-----
+Unknown file .\config\config.properties
+.\config\config.properties (The system cannot find the path specified)	
+HH:mm:ss dd/MM/yyyy - 20:37:31 14/12/2023
+-----
+Error connect control
+Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.	
+HH:mm:ss dd/MM/yyyy - 20:41:33 15/12/2023
+-----
