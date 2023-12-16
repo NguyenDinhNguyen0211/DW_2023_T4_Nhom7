@@ -1,4 +1,4 @@
-package extract2;
+package extract;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -95,7 +95,7 @@ public class CrawlVietcombank {
     }
     public static boolean crawlDataVietcombank(){
         String url = "https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx";
-        String folderSelected = "E:\\DW_2023_T4_Nhom7-main\\file";
+        String folderSelected = "D:\\DW_2023_T4_Nhom7\\file\\crawl";
         try {
             // Kiểm tra nếu thư mục không tồn tại, tạo nó
             Path folderPath = Paths.get(folderSelected);
@@ -129,7 +129,6 @@ public class CrawlVietcombank {
                         String buy = exrateElem.getAttribute("Buy");
                         String transfer = exrateElem.getAttribute("Transfer");
                         String sell = exrateElem.getAttribute("Sell");
-
                         data.add(new String[]{currencyCode, currencyName, buy, transfer, sell});
                     }
 
@@ -169,8 +168,8 @@ public class CrawlVietcombank {
     }
     public static File crawlDataVietcombankFile() {
         String url = "https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx";
-//        String folderSelected = "D:\\DW_2023_T4_Nhom7\\file";
-        String folderSelected = "E:\\DW_2023_T4_Nhom7-main\\file";
+       String folderSelected = "D:\\DW_2023_T4_Nhom7\\file\\crawl";
+        // String folderSelected = "E:\\test\\DW_2023_T4_Nhom7-main\\file";
         try {
             // Kiểm tra nếu thư mục không tồn tại, tạo nó
             Path folderPath = Paths.get(folderSelected);
@@ -252,7 +251,7 @@ public class CrawlVietcombank {
     }
     public static void main(String[] args) {
         String url = "https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx";
-        String folderSelected = "D:\\DW_2023_T4_Nhom7\\file";
+        String folderSelected = "D:\\DW_2023_T4_Nhom7\\file\\crawl";
 
 //       crawlVietcombank(url,folderSelected);
 //        crawlDataVietcombank();
