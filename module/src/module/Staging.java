@@ -14,12 +14,14 @@ public class Staging {
     String url_source = null;
     String[] url_sources = null;
 
-    public void staging() throws SQLException, IOException {
+    public void staging() throws IOException {
+        System.out.println("start staging");
         Connection conn = null;
         PreparedStatement pre_control = null;
         String link = ".\\config\\config.properties";
         // 1. Đọc file config.properties
-        try (InputStream input = new FileInputStream(link)) {
+        try {
+            InputStream input = new FileInputStream(link);
             Properties prop = new Properties();
             prop.load(input);
             // 2. Lấy đường dẫn các source data từ file config
@@ -32,7 +34,7 @@ public class Staging {
                 try {
                     // 5. Tìm các hàng có status P và destination là S
                     ResultSet re = checkStatus(conn, pre_control, "P", "S", us);
-                    // 5. Kiểm tra có tồn tại tiến trình đang chạy
+                    // 6. Kiểm tra có tồn tại tiến trình đang chạy
                     if (re.next()) {
                         // 6.1 Thông báo
                         System.out.println("Currently, there is another process at work."
@@ -64,6 +66,8 @@ public class Staging {
                             pre_control = conn.prepareStatement(sql3);
                             pre_control.executeUpdate();
                             // 8.2 Ktra file có tồn tại trong folder
+                            System.out.println(file.getAbsolutePath());
+                            System.out.println(file.exists());
                             if (!file.exists()) {
                                 // file không tồn tại - cập nhật status: E - thông báo
                                 pre_control = conn.prepareStatement(sql4);
@@ -90,10 +94,15 @@ public class Staging {
                                 String sql = "LOAD DATA INFILE '" + path + "' INTO TABLE  exchange_rate\r\n" + //
                                         "COLUMNS TERMINATED BY ','\r\n" + //
                                         "OPTIONALLY ENCLOSED BY '\"'\r\n" + //
-                                        "IGNORE 3 LINES;";
+                                        "IGNORE 1 LINES;";
                                 PreparedStatement pre_Staging = conn_Staging.prepareStatement(sql);
                                 // 8.4 import data từ file vào db staging
-                                count = pre_Staging.executeUpdate();
+                                try {
+                                    count = pre_Staging.executeUpdate();
+                                } catch (Exception e) {
+                                    // 8.4.1 Thông báo "The file is not in the correct format"
+                                    System.out.println("The file is not in the correct format");
+                                }
                                 // 8.5 Kiểm tra có load hết dữ liệu không
                                 if (count == row_count) {
                                     String sql2 = "UPDATE data_file join data_file_configs on data_file.df_config_id = data_file_configs.id SET status='C', destination = 'S', data_file.update_at=now() WHERE data_file.id="
@@ -112,7 +121,7 @@ public class Staging {
                                 }
                                 // 8.6 thông báo hoàn thành
                                 System.out.println("Complete:\n" + "file name: " + filename
-                                        + " ,total: " + count + "//" + row_count + " row");
+                                        + " ,total: " + count + "/" + row_count + " row");
                             }
                         }
                     }
@@ -123,8 +132,10 @@ public class Staging {
                     e.printStackTrace();
                 }
             }
+            if (pre_control != null) {
+                pre_control.close();
+            }
             // 9. Đóng kết nối db
-            pre_control.close();
             conn.close();
         } catch (IOException ex) {
             // 1.1 Thông báo không tìm thấy file
@@ -132,7 +143,12 @@ public class Staging {
             // 1.2 Log file
             new GetConnection().logFile("Unknown file " + link + "\n" + ex.getMessage());
             System.exit(0);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
+        System.out.println("the end staging");
+
     }
 
     public ResultSet checkStatus(Connection conn, PreparedStatement pre_control, String status, String destination,
