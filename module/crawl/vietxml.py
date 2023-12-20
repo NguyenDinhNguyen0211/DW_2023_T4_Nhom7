@@ -8,8 +8,8 @@ url = "https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx"
 # ...
 
 # Đặt đường dẫn thư mục lưu trữ trực tiếp trong mã code
-# folder_selected = "D:\\DW_2023_T4_Nhom7\\file"
-folder_selected = "D:\DW_2023_T4_Nhom7\file\crawl"
+folder_selected = "D:\\DW_2023_T4_Nhom7\\file\\crawl"
+#folder_selected = "E:\\test\\DW_2023_T4_Nhom7-main\\file"
 
 try:
     # Kiểm tra nếu thư mục không tồn tại, tạo nó
@@ -44,13 +44,14 @@ try:
                     "Transfer": transfer,
                     "Sell": sell,
                     "BankName": "VCB",  # Thêm cột "BankName" và gán giá trị từ phần tử "Source" của XML
-                    "Date": datetime.now().strftime("%d/%m/%Y")  # Thêm cột "Date" và gán giá trị từ phần tử "DateTime" của XML
+                    "Date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Thêm cột "Date" và gán giá trị từ phần tử "DateTime" của XML
                 })
 
             df = pd.DataFrame(data)
 
             # Lấy ngày và thời gian hiện tại
-            current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
+            #current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
+            current_datetime = datetime.now().strftime("%Y%m%d_%H%M")
 
             # Tạo tên file với định dạng "vietcombank_data_<ngày>_<giờ>.xlsx"
             excel_filename = f"{folder_selected}/vietcombank_data_{current_datetime}.csv"

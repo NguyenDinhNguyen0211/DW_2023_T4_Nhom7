@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import os
 
 # Đường dẫn của thư mục bạn muốn lưu file
+#output_folder = "E:\\test\\DW_2023_T4_Nhom7-main\\file"
 output_folder = "D:\\DW_2023_T4_Nhom7\\file\\crawl"
 url = "https://bidv.com.vn/vn/ty-gia-ngoai-te"
 
@@ -77,10 +78,11 @@ finally:
 df = pd.DataFrame(data, columns=["Ký hiệu ngoại tệ", "Tên ngoại tệ", "Mua tiền mặt và Séc", "Mua chuyển khoản", "Bán"])
 # Thêm hai cột mới
 df["Bank Name"] = bank_name
-df["Date"] = datetime.now().strftime("%Y-%m-%d")
+df["Date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # Lấy ngày và thời gian hiện tại
-current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
+#current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
+current_datetime = datetime.now().strftime("%Y%m%d_%H%M")
 
 # Tạo tên file với định dạng "vietcombank_data_<ngày>_<giờ>.xlsx"
 excel_filename = f"{output_folder}/bidv_data_{current_datetime}.csv"

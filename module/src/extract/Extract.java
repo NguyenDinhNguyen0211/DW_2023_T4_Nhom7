@@ -1,4 +1,4 @@
-package extract;
+package extract4;
 
 import model.DataFile;
 import model.DataFileConfig;
@@ -23,22 +23,23 @@ public class Extract {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String currentDateTime = dateFormat.format(new Date());
+        int rowCount = 0;
 
         String csvFileName="";
         switch (sourceUrl){
             case "vietcombank.com" :
                 csvFileName = "vietcombank_data_" + currentDateTime + ".csv";
+                rowCount = 20;
                 break;
             case "bidv.com" :
                 csvFileName = "bidv_data_" + currentDateTime + ".csv";
+                rowCount = 23;
                 break;
         }
-//        String csvFileName = "vietcombank_data_" + currentDateTime + ".csv";
-
         try (PreparedStatement preparedStatement = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
             int dfConfig = dfConfigId;
             String name = csvFileName;
-            int rowCount = 24;
+//            rowCount = rowCount;
             String status = "N";
             String note = "Data imported successfully";
             Date createdAt = new Date();
@@ -120,7 +121,7 @@ return dataFileConfig;
             case "vietcombank.com" :
                 // 9.1.1 run file "D:\\DW_2023_T4_Nhom7\\module\\crawl\\vietxml.py"
                 // 9.3 kiểm tra chạy thành công hay không
-                if(new RunPythonScript().runScript("D:\\DW_2023_T4_Nhom7\\module\\crawl\\vietxml.py")){
+                if(new RunPythonScript().runScript("E:\\test\\DW_2023_T4_Nhom7-main\\module\\crawl\\vietxml.py")){
 //                if(new CrawlVietcombank().crawlDataVietcombank()){
                     System.out.println("Chạy script data thành công");
                     success = true;
@@ -136,7 +137,7 @@ return dataFileConfig;
             case "bidv.com" :
                 // 9.2.1 run file "D:\\DW_2023_T4_Nhom7\\module\\crawl\\bidvcrawl.py"
                 // 9.3 kiểm tra chạy thành công hay không
-                if(new RunPythonScript().runScript("D:\\DW_2023_T4_Nhom7\\module\\crawl\\bidvcrawl.py")){
+                if(new RunPythonScript().runScript("E:\\test\\DW_2023_T4_Nhom7-main\\module\\crawl\\bidvcrawl.py")){
                     System.out.println("Chạy script data thành công");
                     success = true;
                     new GetConnection().logFile("Chạy script data thành công");
@@ -235,7 +236,8 @@ return dataFileConfig;
     }
     private List<Integer> loadConfig() throws SQLException, IOException {
         conn = new GetConnection().getConnection("control");
-        String link = "D:\\DW_2023_T4_Nhom7\\module\\config\\config.properties";
+        String link = "E:\\test\\DW_2023_T4_Nhom7-main\\module\\config\\config.properties";
+//        String link = "../../module/config/config.properties";
         List<Integer> dfConfigIds = new ArrayList<>();
 
         InputStream input = null;
@@ -339,7 +341,8 @@ return dataFileConfig;
                 if (crawlSuccess) {
                     System.out.println("Crawl operation successful.");
                     try {
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+//                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmm");
                         String currentDateTime = dateFormat.format(new Date());
 
                         String csvFileName = "";
